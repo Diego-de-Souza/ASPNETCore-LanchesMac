@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using LanchesMac.Context; 
+using LanchesMac.Context;
+using LanchesMac.Repositories;
+using LanchesMac.Repositories.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +10,10 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseMySql(
         builder.Configuration.GetConnectionString("DefaultConnection"),
         new MySqlServerVersion(new Version(8, 0, 39))));
+
+// Adicionando os repositórios ao container de serviços
+builder.Services.AddTransient<ILancheRepository, LancheRepository>();
+builder.Services.AddTransient<ICategoriaRepository, CategoriaRepository>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
